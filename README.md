@@ -68,3 +68,15 @@ public class LeftEntrust implements Entrust<ItemMainLeftBinding, ItemBean> {
     }
 }
 ```
+
+
+## 感谢
+
+
+* [https://github.com/hongyangAndroid/baseAdapter](https://github.com/hongyangAndroid/baseAdapter)
+
+
+
+* [https://github.com/meijingkang/baseAdapter](https://github.com/meijingkang/baseAdapter)
+	
+
