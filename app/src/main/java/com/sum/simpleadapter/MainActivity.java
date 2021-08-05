@@ -1,19 +1,28 @@
 package com.sum.simpleadapter;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.sum.simple.BaseAdapter;
+import com.sum.simple.base.ViewHolder;
 import com.sum.simple.interfaces.SimpleOnItemClickListener;
 import com.sum.simple.multiple.MultipleAdapter;
 import com.sum.simpleadapter.databinding.ActivityMainBinding;
+import com.sum.simpleadapter.databinding.ItemMainBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;
@@ -37,11 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        BaseAdapter<ItemMainBinding, ItemBean> adapter = new BaseAdapter<ItemMainBinding, ItemBean>(this, datas) {
 //            @Override
-//            public int getItemViewType(int position) {
-//                return datas.get(position).getType();
-//            }
-//
-//            @Override
 //            protected ItemMainBinding getViewBinding(int viewType, LayoutInflater layoutInflater, ViewGroup parent) {
 //                    return ItemMainBinding.inflate(layoutInflater, parent, false);
 //            }
@@ -53,7 +57,18 @@ public class MainActivity extends AppCompatActivity {
 //
 //        };
 //
-//        viewBinding.recyclerView.setAdapter(adapter);
+//        viewBinding.recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
+//
+//            @Override
+//            protected ItemMainBinding getViewBinding(int viewType, LayoutInflater layoutInflater, ViewGroup parent) {
+//                return ItemMainBinding.inflate(layoutInflater, parent, false);
+//            }
+//
+//            @Override
+//            protected void onBind(Context context, ViewHolder<ItemMainBinding> holder, String item, int position) {
+//                holder.binding.tvText.setText(item);
+//            }
+//        });
 //
 //        adapter.setOnclickListener(new SimpleOnItemClickListener<ItemBean>() {
 //            @Override
