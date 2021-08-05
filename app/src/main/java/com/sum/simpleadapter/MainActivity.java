@@ -1,28 +1,19 @@
 package com.sum.simpleadapter;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.sum.simple.BaseAdapter;
-import com.sum.simple.base.ViewHolder;
-import com.sum.simple.interfaces.SimpleOnItemClickListener;
-import com.sum.simple.multiple.MultipleAdapter;
+import com.sum.simpleadapter.interfaces.SimpleOnItemClickListener;
+import com.sum.simpleadapter.multiple.MultipleAdapter;
 import com.sum.simpleadapter.databinding.ActivityMainBinding;
-import com.sum.simpleadapter.databinding.ItemMainBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewbinding.ViewBinding;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding viewBinding;

@@ -1,10 +1,10 @@
-package com.sum.simple.multiple;
+package com.sum.simpleadapter.multiple;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.sum.simple.base.ViewHolder;
+import com.sum.simpleadapter.base.ViewHolder;
 
 import androidx.viewbinding.ViewBinding;
 

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.sum.simple.base.ViewHolder;
-import com.sum.simple.multiple.Entrust;
+import com.sum.simpleadapter.base.ViewHolder;
+import com.sum.simpleadapter.multiple.Entrust;
 import com.sum.simpleadapter.databinding.ItemMainLeftBinding;
 
 import androidx.viewbinding.ViewBinding;

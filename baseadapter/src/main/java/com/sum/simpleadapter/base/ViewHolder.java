@@ -1,4 +1,4 @@
-package com.sum.simple.base;
+package com.sum.simpleadapter.base;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;

@@ -1,4 +1,4 @@
-package com.sum.simple.multiple;
+package com.sum.simpleadapter.multiple;
 
 import java.util.ArrayList;
 import java.util.List;

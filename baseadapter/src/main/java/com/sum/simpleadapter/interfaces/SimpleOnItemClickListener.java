@@ -1,4 +1,4 @@
-package com.sum.simple.interfaces;
+package com.sum.simpleadapter.interfaces;
 
 import android.view.View;
 
