@@ -82,7 +82,7 @@ public class MultipleAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         });
     }
 
-    public void setOnclickListener(OnItemClickListener<T> onClickListener) {
+    public void setOnItemClickListener(OnItemClickListener<T> onClickListener) {
         this.onClickListener = onClickListener;
     }
 }

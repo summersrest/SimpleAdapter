@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         multipleAdapter.add(new LeftEntrust());
         multipleAdapter.add(new RightEntrust());
         viewBinding.recyclerView.setAdapter(multipleAdapter);
-        multipleAdapter.setOnclickListener(new SimpleOnItemClickListener<ItemBean>() {
+        multipleAdapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
             @Override
             public void onItemClick(View view, ItemBean item, int position) {
                 Toast.makeText(MainActivity.this, item.getTitie(), Toast.LENGTH_SHORT).show();
