@@ -3,11 +3,9 @@ package com.sum.simpleadapter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
+import com.sum.simpleadapter.databinding.ActivityMainBinding;
 import com.sum.simpleadapter.interfaces.SimpleOnItemClickListener;
 import com.sum.simpleadapter.multiple.MultipleAdapter;
-import com.sum.simpleadapter.databinding.ActivityMainBinding;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //
-//        adapter.setOnclickListener(new SimpleOnItemClickListener<ItemBean>() {
+//        adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
 //            @Override
 //            public void onItemClick(View view, ItemBean item, int position) {
 //                Toast.makeText(MainActivity.this, item.getTitie(), Toast.LENGTH_SHORT).show();

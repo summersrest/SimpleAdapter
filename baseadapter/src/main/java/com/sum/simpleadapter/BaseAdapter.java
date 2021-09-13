@@ -89,7 +89,7 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
         });
     }
 
-    public void setOnclickListener(OnItemClickListener<T> onClickListener) {
+    public void setOnItemClickListener(OnItemClickListener<T> onClickListener) {
         this.onClickListener = onClickListener;
     }
 
