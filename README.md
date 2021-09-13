@@ -1,6 +1,6 @@
 # SimpleAdapter
     Android 使用ViewBinding的RecyclerView Adapter的封装，简单易用。
-## **1、导入**
+## **1、导入**Cancel changes
 
  1.引入jitpack
  ```
@@ -34,7 +34,7 @@ recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
 ```
 点击事件
 ```
-adapter.setOnclickListener(new SimpleOnItemClickListener<ItemBean>() {
+adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
             @Override
             public void onItemClick(View view, ItemBean item, int position) {
                 
