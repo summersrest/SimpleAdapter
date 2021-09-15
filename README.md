@@ -3,7 +3,7 @@
 ## **1、导入**Cancel changes
 
  1.引入jitpack
- ```
+ ```xml
  allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
@@ -11,14 +11,14 @@
 }
 ```
 2.添加
-```
+```xml
 implementation 'com.github.summersrest:SimpleAdapter:v1.0.2'
 ```
 
 ## **2、使用**
 
 ### 1、单布局使用方法
-```
+```java
 recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
 
             @Override
@@ -33,7 +33,7 @@ recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
         });
 ```
 点击事件
-```
+```java
 adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
             @Override
             public void onItemClick(View view, ItemBean item, int position) {
@@ -43,14 +43,14 @@ adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
 ```
 
 ### 2、多布局使用方法
-```
+```java
  MultipleAdapter<ItemBean> multipleAdapter = new MultipleAdapter<>(this, datas);
  multipleAdapter.add(new LeftEntrust());
  multipleAdapter.add(new RightEntrust());
  recyclerView.setAdapter(multipleAdapter);
 ```
 Entrust
-```
+```java
 public class LeftEntrust implements Entrust<ItemMainLeftBinding, ItemBean> {
     @Override
     public ViewBinding getViewBinding(LayoutInflater layoutInflater, ViewGroup parent) {
