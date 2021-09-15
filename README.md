@@ -3,7 +3,7 @@
 ## **1、导入**Cancel changes
 
  1.引入jitpack
- ```xml
+ ```
  allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
@@ -11,7 +11,7 @@
 }
 ```
 2.添加
-```xml
+```
 implementation 'com.github.summersrest:SimpleAdapter:v1.0.2'
 ```
 
