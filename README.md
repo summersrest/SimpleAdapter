@@ -1,6 +1,6 @@
 # SimpleAdapter
     Android 使用ViewBinding的RecyclerView Adapter的封装，简单易用。
-## **1、导入**Cancel changes
+## **1、导入**
 
  1.引入jitpack
  ```
