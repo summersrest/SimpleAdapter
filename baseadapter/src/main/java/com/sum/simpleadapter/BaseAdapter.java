@@ -20,6 +20,7 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
     protected Context context;
     protected List<T> datas;
     protected OnItemClickListener<T> onClickListener;
+    private Integer focusPosition = null;
 
     /**
      * 获取viewBinding
@@ -87,10 +88,24 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
                 return false;
             }
         });
+        viewHolder.binding.getRoot().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                int position = viewHolder.getAdapterPosition();
+                if (hasFocus) {
+                    focusPosition = position;
+                } else {
+                    focusPosition = null;
+                }
+            }
+        });
     }
 
     public void setOnItemClickListener(OnItemClickListener<T> onClickListener) {
         this.onClickListener = onClickListener;
     }
 
+    public Integer getFocusPosition() {
+        return focusPosition;
+    }
 }
