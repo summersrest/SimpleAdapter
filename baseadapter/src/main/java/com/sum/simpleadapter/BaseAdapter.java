@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.sum.simpleadapter.base.ViewHolder;
 import com.sum.simpleadapter.interfaces.OnItemClickListener;
+import com.sum.simpleadapter.interfaces.OnItemFocusChangeListener;
+
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +22,7 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
     protected Context context;
     protected List<T> datas;
     protected OnItemClickListener<T> onClickListener;
-    private Integer focusPosition = null;
+    protected OnItemFocusChangeListener onItemFocusChangeListener;
 
     /**
      * 获取viewBinding
@@ -91,12 +93,15 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
         viewHolder.binding.getRoot().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                int position = viewHolder.getAdapterPosition();
-                if (hasFocus) {
-                    focusPosition = position;
-                } else {
-                    focusPosition = null;
+                if (null != onItemFocusChangeListener) {
+                    int position = viewHolder.getAdapterPosition();
+                    if (hasFocus) {
+                        onItemFocusChangeListener.onFocusItem(viewHolder.binding.getRoot(), position);
+                    } else {
+                        onItemFocusChangeListener.onFocusItem(viewHolder.binding.getRoot(), null);
+                    }
                 }
+
             }
         });
     }
@@ -105,7 +110,8 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
         this.onClickListener = onClickListener;
     }
 
-    public Integer getFocusPosition() {
-        return focusPosition;
+    public void setOnItemFocusChangeListener(OnItemFocusChangeListener onItemFocusChangeListener) {
+        this.onItemFocusChangeListener = onItemFocusChangeListener;
     }
+
 }
