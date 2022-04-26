@@ -12,7 +12,7 @@
 ```
 2.添加
 ```
-implementation 'com.github.summersrest:SimpleAdapter:v1.0.4'
+implementation 'com.github.summersrest:SimpleAdapter:v1.0.5'
 ```
 
 ## **2、使用**
