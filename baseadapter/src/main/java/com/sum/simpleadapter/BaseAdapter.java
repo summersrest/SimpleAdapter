@@ -4,12 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import com.sum.simpleadapter.base.ViewHolder;
 import com.sum.simpleadapter.interfaces.OnItemClickListener;
 import com.sum.simpleadapter.interfaces.OnItemFocusChangeListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
@@ -21,9 +25,10 @@ import androidx.viewbinding.ViewBinding;
 public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView.Adapter<ViewHolder<V>> {
     protected Context context;
     protected List<T> datas;
+    protected List<View> viewList = new ArrayList<>();
     protected OnItemClickListener<T> onClickListener;
-    protected OnItemFocusChangeListener onItemFocusChangeListener;
-
+    protected boolean isRecordLastFocusItem;
+    private int recordPosition;
     /**
      * 获取viewBinding
      *
@@ -90,28 +95,38 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
                 return false;
             }
         });
-        viewHolder.binding.getRoot().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (null != onItemFocusChangeListener) {
-                    int position = viewHolder.getAdapterPosition();
+        //是否记录最后选中的item
+        if (isRecordLastFocusItem) {
+            viewList.add(viewHolder.binding.getRoot());
+            viewHolder.binding.getRoot().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        onItemFocusChangeListener.onFocusItem(viewHolder.binding.getRoot(), position);
-                    } else {
-                        onItemFocusChangeListener.onFocusItem(viewHolder.binding.getRoot(), null);
+                        if (viewList.size() > recordPosition) {
+                            viewList.get(recordPosition).setSelected(false);
+                        }
+                        recordPosition = viewHolder.getAdapterPosition();
+                        viewHolder.binding.getRoot().setSelected(true);
                     }
                 }
+            });
+        }
 
-            }
-        });
+
+
+
     }
+
 
     public void setOnItemClickListener(OnItemClickListener<T> onClickListener) {
         this.onClickListener = onClickListener;
     }
 
-    public void setOnItemFocusChangeListener(OnItemFocusChangeListener onItemFocusChangeListener) {
-        this.onItemFocusChangeListener = onItemFocusChangeListener;
+    public void recordLastFocusItem(boolean isRecordLastFocusItem) {
+        this.isRecordLastFocusItem = isRecordLastFocusItem;
     }
 
+    public int getLastRecordPosition() {
+        return recordPosition;
+    }
 }

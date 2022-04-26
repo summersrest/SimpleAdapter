@@ -1,9 +1,15 @@
 package com.sum.simpleadapter;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.sum.simpleadapter.base.ViewHolder;
 import com.sum.simpleadapter.databinding.ActivityMainBinding;
+import com.sum.simpleadapter.databinding.ItemMainBinding;
 import com.sum.simpleadapter.interfaces.SimpleOnItemClickListener;
 import com.sum.simpleadapter.multiple.MultipleAdapter;
 import java.util.ArrayList;
@@ -33,19 +39,19 @@ public class MainActivity extends AppCompatActivity {
             datas.add(new ItemBean(list.get(i), i % 2));
         }
 
-//        BaseAdapter<ItemMainBinding, ItemBean> adapter = new BaseAdapter<ItemMainBinding, ItemBean>(this, datas) {
-//            @Override
-//            protected ItemMainBinding getViewBinding(int viewType, LayoutInflater layoutInflater, ViewGroup parent) {
-//                    return ItemMainBinding.inflate(layoutInflater, parent, false);
-//            }
-//
-//            @Override
-//            protected void onBind(Context context, ViewHolder<ItemMainBinding> holder, ItemBean item, int position) {
-//                holder.binding.tvText.setText(item.getTitie());
-//            }
-//
-//        };
-//
+        BaseAdapter<ItemMainBinding, ItemBean> adapter = new BaseAdapter<ItemMainBinding, ItemBean>(this, datas) {
+            @Override
+            protected ItemMainBinding getViewBinding(int viewType, LayoutInflater layoutInflater, ViewGroup parent) {
+                    return ItemMainBinding.inflate(layoutInflater, parent, false);
+            }
+
+            @Override
+            protected void onBind(Context context, ViewHolder<ItemMainBinding> holder, ItemBean item, int position) {
+                holder.binding.tvText.setText(item.getTitie());
+            }
+
+        };
+
 //        viewBinding.recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
 //
 //            @Override
@@ -59,22 +65,24 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //
-//        adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
+        adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
+            @Override
+            public void onItemClick(View view, ItemBean item, int position) {
+                Toast.makeText(MainActivity.this, adapter.getLastRecordPosition() + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+        adapter.recordLastFocusItem(true);
+        viewBinding.recyclerView.setAdapter(adapter);
+
+//        MultipleAdapter<ItemBean> multipleAdapter = new MultipleAdapter<>(this, datas);
+//        multipleAdapter.add(new LeftEntrust());
+//        multipleAdapter.add(new RightEntrust());
+//        viewBinding.recyclerView.setAdapter(multipleAdapter);
+//        multipleAdapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
 //            @Override
 //            public void onItemClick(View view, ItemBean item, int position) {
 //                Toast.makeText(MainActivity.this, item.getTitie(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
-
-        MultipleAdapter<ItemBean> multipleAdapter = new MultipleAdapter<>(this, datas);
-        multipleAdapter.add(new LeftEntrust());
-        multipleAdapter.add(new RightEntrust());
-        viewBinding.recyclerView.setAdapter(multipleAdapter);
-        multipleAdapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
-            @Override
-            public void onItemClick(View view, ItemBean item, int position) {
-                Toast.makeText(MainActivity.this, item.getTitie(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
