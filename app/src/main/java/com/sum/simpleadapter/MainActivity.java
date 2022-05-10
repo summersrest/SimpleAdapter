@@ -2,9 +2,11 @@ package com.sum.simpleadapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.sum.simpleadapter.base.ViewHolder;
@@ -12,6 +14,7 @@ import com.sum.simpleadapter.databinding.ActivityMainBinding;
 import com.sum.simpleadapter.databinding.ItemMainBinding;
 import com.sum.simpleadapter.interfaces.SimpleOnItemClickListener;
 import com.sum.simpleadapter.multiple.MultipleAdapter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +22,11 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-public class MainActivity extends AppCompatActivity {
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
+public class MainActivity extends AppCompatActivity implements ViewTreeObserver.OnGlobalLayoutListener {
     private ActivityMainBinding viewBinding;
+    private BaseAdapter<ItemMainBinding, ItemBean> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +39,16 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         viewBinding.recyclerView.setLayoutManager(linearLayoutManager);
 
-        List<String> list = Arrays.asList("变形金刚", "X战警", "复仇者联盟", "阿凡达", "战狼", "拯救大兵瑞恩", "肖申克的救赎", "阿甘正传", "泰坦尼克号", "蝙蝠侠", "雷神");
+        List<String> list = Arrays.asList("变形金刚", "X战警", "复仇者联盟", "阿凡达", "战狼", "拯救大兵瑞恩", "肖申克的救赎", "阿甘正传", "泰坦尼克号", "蝙蝠侠", "雷神", "雷神", "雷神", "雷神", "雷神", "雷神");
+
         List<ItemBean> datas = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             datas.add(new ItemBean(list.get(i), i % 2));
         }
-
-        BaseAdapter<ItemMainBinding, ItemBean> adapter = new BaseAdapter<ItemMainBinding, ItemBean>(this, datas) {
+        adapter = new BaseAdapter<ItemMainBinding, ItemBean>(this, datas) {
             @Override
             protected ItemMainBinding getViewBinding(int viewType, LayoutInflater layoutInflater, ViewGroup parent) {
-                    return ItemMainBinding.inflate(layoutInflater, parent, false);
+                return ItemMainBinding.inflate(layoutInflater, parent, false);
             }
 
             @Override
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
-
+        viewBinding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(this);
 //        viewBinding.recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
 //
 //            @Override
@@ -71,9 +77,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, adapter.getLastRecordPosition() + "", Toast.LENGTH_SHORT).show();
             }
         });
-        adapter.recordLastFocusItem(true);
         viewBinding.recyclerView.setAdapter(adapter);
-
+//        viewBinding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+//            Log.i("green", "绘制完成");
+//            adapter.requestFocusFirst();
+//        });
+//        viewBinding.recyclerView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                adapter.requestFocus(3);
+//            }
+//        }, 200);
 //        MultipleAdapter<ItemBean> multipleAdapter = new MultipleAdapter<>(this, datas);
 //        multipleAdapter.add(new LeftEntrust());
 //        multipleAdapter.add(new RightEntrust());
@@ -84,5 +98,16 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(MainActivity.this, item.getTitie(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
+
+        viewBinding.btn.setOnClickListener(v -> {
+            adapter.notifyDataSetChanged();
+            viewBinding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(this);
+        });
+    }
+
+    @Override
+    public void onGlobalLayout() {
+        adapter.requestFocus(adapter.getLastRecordPosition() == -1 ? 0 : adapter.getLastRecordPosition());
+        viewBinding.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
     }
 }

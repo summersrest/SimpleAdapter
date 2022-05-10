@@ -4,18 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.sum.simpleadapter.base.ViewHolder;
 import com.sum.simpleadapter.interfaces.OnItemClickListener;
-import com.sum.simpleadapter.interfaces.OnItemFocusChangeListener;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewbinding.ViewBinding;
+import java.util.Map;
 
 /**
  * @author liujiang
@@ -25,10 +24,10 @@ import androidx.viewbinding.ViewBinding;
 public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView.Adapter<ViewHolder<V>> {
     protected Context context;
     protected List<T> datas;
-    protected List<View> viewList = new ArrayList<>();
+    protected Map<Integer, View> viewMap = new HashMap<>();
     protected OnItemClickListener<T> onClickListener;
-    protected boolean isRecordLastFocusItem;
-    private int recordPosition;
+    protected boolean isRecordLastFocusItem = true;
+    private int recordPosition = -1;
     /**
      * 获取viewBinding
      *
@@ -66,6 +65,7 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder<V> holder, int position) {
+        viewMap.put(position, holder.binding.getRoot());
         onBind(context, holder, datas.get(position), position);
     }
 
@@ -80,6 +80,10 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
             public void onClick(View v) {
                 if (null != onClickListener) {
                     int position = viewHolder.getAdapterPosition();
+                    if (isRecordLastFocusItem) {
+                        //修改选中item
+                        requestFocus(position);
+                    }
                     onClickListener.onItemClick(v, datas.get(position), position);
                 }
             }
@@ -90,6 +94,10 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
             public boolean onLongClick(View v) {
                 if (null != onClickListener) {
                     int position = viewHolder.getAdapterPosition();
+                    if (isRecordLastFocusItem) {
+                        //修改选中item
+                        requestFocus(position);
+                    }
                     return onClickListener.onItemLongClick(v, datas.get(position), position);
                 }
                 return false;
@@ -97,13 +105,13 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
         });
         //是否记录最后选中的item
         if (isRecordLastFocusItem) {
-            viewList.add(viewHolder.binding.getRoot());
             viewHolder.binding.getRoot().setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        if (viewList.size() > recordPosition) {
-                            viewList.get(recordPosition).setSelected(false);
+                        View lastFocusView = viewMap.get(recordPosition);
+                        if (null != lastFocusView) {
+                            lastFocusView.setSelected(false);
                         }
                         recordPosition = viewHolder.getAdapterPosition();
                         viewHolder.binding.getRoot().setSelected(true);
@@ -111,9 +119,6 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
                 }
             });
         }
-
-
-
 
     }
 
@@ -127,6 +132,32 @@ public abstract class BaseAdapter<V extends ViewBinding, T> extends RecyclerView
     }
 
     public int getLastRecordPosition() {
+        if (recordPosition >= datas.size()) {
+            return -1;
+        }
         return recordPosition;
+    }
+
+    public void requestFocusFirst() {
+        requestFocus(0);
+    }
+
+    public void requestFocus(int position) {
+        if (position < 0) {
+            return;
+        }
+        View view = viewMap.get(position);
+        if (null != view) {
+            //原有焦点item取消焦点与选中状态
+            View lastFocusView = viewMap.get(recordPosition);
+            if (null != lastFocusView) {
+                lastFocusView.setSelected(false);
+            }
+            recordPosition = position;
+
+
+            view.requestFocus();
+            view.setSelected(true);
+        }
     }
 }
