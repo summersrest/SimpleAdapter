@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
-public class MainActivity extends AppCompatActivity implements ViewTreeObserver.OnGlobalLayoutListener {
+public class MainActivity extends AppCompatActivity{
     private ActivityMainBinding viewBinding;
     private BaseAdapter<ItemMainBinding, ItemBean> adapter;
 
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements ViewTreeObserver.
             }
 
         };
-        viewBinding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(this);
 //        viewBinding.recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
 //
 //            @Override
@@ -74,20 +73,11 @@ public class MainActivity extends AppCompatActivity implements ViewTreeObserver.
         adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
             @Override
             public void onItemClick(View view, ItemBean item, int position) {
-                Toast.makeText(MainActivity.this, adapter.getLastRecordPosition() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, item.getTitie(), Toast.LENGTH_SHORT).show();
             }
         });
         viewBinding.recyclerView.setAdapter(adapter);
-//        viewBinding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-//            Log.i("green", "绘制完成");
-//            adapter.requestFocusFirst();
-//        });
-//        viewBinding.recyclerView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                adapter.requestFocus(3);
-//            }
-//        }, 200);
+
 //        MultipleAdapter<ItemBean> multipleAdapter = new MultipleAdapter<>(this, datas);
 //        multipleAdapter.add(new LeftEntrust());
 //        multipleAdapter.add(new RightEntrust());
@@ -99,15 +89,7 @@ public class MainActivity extends AppCompatActivity implements ViewTreeObserver.
 //            }
 //        });
 
-        viewBinding.btn.setOnClickListener(v -> {
-            adapter.notifyDataSetChanged();
-            viewBinding.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(this);
-        });
+
     }
 
-    @Override
-    public void onGlobalLayout() {
-        adapter.requestFocus(adapter.getLastRecordPosition() == -1 ? 0 : adapter.getLastRecordPosition());
-        viewBinding.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-    }
 }
