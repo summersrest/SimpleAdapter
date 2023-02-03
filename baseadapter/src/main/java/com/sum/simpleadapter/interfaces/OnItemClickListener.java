@@ -9,5 +9,7 @@ import android.view.View;
 public interface OnItemClickListener<T> {
     void onItemClick(View view, T item, int position);
 
-    boolean onItemLongClick(View view, T item, int position);
+    default boolean onItemLongClick(View view, T item, int position) {
+        return false;
+    }
 }
