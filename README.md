@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 }
 ```
 2.添加
+ Module的build.gradle
 ```
 implementation("com.github.summersrest:SimpleAdapter:v1.0.3")
 ```
