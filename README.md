@@ -3,7 +3,7 @@
 ## **1、导入**
 
  1.引入jitpack
- 项目根目录中的build.gradle
+ 项目根目录中的settings.gradle
  ```
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
