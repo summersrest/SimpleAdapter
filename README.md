@@ -17,60 +17,78 @@ dependencyResolutionManagement {
 2.添加
  Module的build.gradle
 ```
-implementation("com.github.summersrest:SimpleAdapter:v1.0.3")
+implementation("com.github.summersrest:SimpleAdapter:v2.0.0")
 ```
 
 ## **2、使用**
 
 ### 1、单布局使用方法
-```java
-recyclerView.setAdapter(new BaseAdapter<ItemMainBinding, String>(this, list) {
+```kotlin
+class MyAdapter(context: Context, data: List<String>): SimpleAdapter<ItemLeftBinding, String>(context, data) {
+    override fun getViewBinding(viewType: Int, layoutInflater: LayoutInflater, parent: ViewGroup): ItemLeftBinding {
+        return ItemLeftBinding.inflate(layoutInflater, parent, false)
+    }
 
-            @Override
-            protected ItemMainBinding getViewBinding(int viewType, LayoutInflater layoutInflater, ViewGroup parent) {
-                return ItemMainBinding.inflate(layoutInflater, parent, false);
-            }
+    override fun onBind(context: Context, binding: ItemLeftBinding, position: Int, item: String) {
+        binding.tvText.text = item
+    }
 
-            @Override
-            protected void onBind(Context context, ViewHolder<ItemMainBinding> holder, String item, int position) {
-                holder.binding.tvText.setText(item);
-            }
-        });
+}
+```
+
+```kotlin
+val data = listOf("变形金刚", "泰坦尼克号", "X战警", "巨齿鲨", "流浪地球", "奥本海默", "拯救大兵瑞恩", "星际大战")
+val adapter = MyAdapter(this, data)
+viewBinding.recyclerView.layoutManager = LinearLayoutManager(this)
+viewBinding.recyclerView.adapter = adapter
 ```
 点击事件
-```java
-adapter.setOnItemClickListener(new SimpleOnItemClickListener<ItemBean>() {
-            @Override
-            public void onItemClick(View view, ItemBean item, int position) {
-                
-            }
-        });
+```kotlin
+adapter.setOnItemClickListener { position, item ->
+    Toast.makeText(this, "$position: $item", Toast.LENGTH_SHORT).show()
+}
 ```
 
 ### 2、多布局使用方法
-```java
- MultipleAdapter<ItemBean> multipleAdapter = new MultipleAdapter<>(this, datas);
- multipleAdapter.add(new LeftEntrust());
- multipleAdapter.add(new RightEntrust());
- recyclerView.setAdapter(multipleAdapter);
+```kotlin
+val data = listOf("变形金刚", "泰坦尼克号", "X战警", "巨齿鲨", "流浪地球", "奥本海默", "拯救大兵瑞恩", "星际大战")
+val adapter = SimpleMultipleAdapter(this, data)
+adapter.add(LeftEntrust())
+adapter.add(RightEntrust())
+viewBinding.recyclerView.layoutManager = LinearLayoutManager(this)
+viewBinding.recyclerView.adapter = adapter
 ```
 Entrust
-```java
-public class LeftEntrust implements Entrust<ItemMainLeftBinding, ItemBean> {
-    @Override
-    public ViewBinding getViewBinding(LayoutInflater layoutInflater, ViewGroup parent) {
-        return ItemMainLeftBinding.inflate(layoutInflater, parent, false);
+```kotlin
+class LeftEntrust: Entrust<ItemLeftBinding, String>() {
+    override fun getViewBinding(layoutInflater: LayoutInflater, parent: ViewGroup): ItemLeftBinding {
+        return ItemLeftBinding.inflate(layoutInflater, parent, false)
     }
 
-    @Override
-    public boolean isThisType(ItemBean itemBean) {
-       return (itemBean.getType() == 0);
+    override fun isThisType(t: String): Boolean {
+        return t.length <= 4
     }
 
-    @Override
-    public void onBind(Context context, ViewHolder<ItemMainLeftBinding> holder, ItemBean item, int position) {
-        holder.binding.tvTextLeft.setText(item.getTitie());
+    override fun onBind(context: Context, binding: ItemLeftBinding, position: Int, item: String) {
+        binding.tvText.text = "${item}：我在左边"
     }
+
+}
+```
+```kotlin
+class RightEntrust: Entrust<ItemRightBinding, String>() {
+    override fun getViewBinding(layoutInflater: LayoutInflater, parent: ViewGroup): ItemRightBinding {
+        return ItemRightBinding.inflate(layoutInflater, parent, false)
+    }
+
+    override fun isThisType(t: String): Boolean {
+        return t.length > 4
+    }
+
+    override fun onBind(context: Context, binding: ItemRightBinding, position: Int, item: String) {
+        binding.tvText.text = "${item}：我在右边"
+    }
+
 }
 ```
 
@@ -79,8 +97,6 @@ public class LeftEntrust implements Entrust<ItemMainLeftBinding, ItemBean> {
 
 
 * [https://github.com/hongyangAndroid/baseAdapter](https://github.com/hongyangAndroid/baseAdapter)
-
-
 
 * [https://github.com/meijingkang/baseAdapter](https://github.com/meijingkang/baseAdapter)
 	
