@@ -3,16 +3,21 @@
 ## **1、导入**
 
  1.引入jitpack
+ 项目根目录中的settings.gradle
  ```
- allprojects {
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven { url 'https://jitpack.io' }
+        google()
+        mavenCentral()
+        maven { url = uri("https://www.jitpack.io")}
     }
 }
 ```
 2.添加
+ Module的build.gradle
 ```
-implementation 'com.github.summersrest:SimpleAdapter:v1.0.3'
+implementation("com.github.summersrest:SimpleAdapter:v1.0.3")
 ```
 
 ## **2、使用**
